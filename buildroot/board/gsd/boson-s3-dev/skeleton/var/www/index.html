@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body {
+			margin: 0;
+			}
+			
+			ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			width: 10%;
+			background-color: #56ccf0;
+			position: fixed;
+			height: 100%;
+			overflow: auto;
+			}
+			
+			li a {
+			display: block;
+			color: #000;
+			padding: 8px 16px;
+			text-decoration: none;
+			}
+			
+			li a.active {
+			background-color: #3678f3;
+			color: white;
+			}
+			
+			li a:hover:not(.active) {
+			background-color: #555;
+			color: white;
+			}
+		</style>
+		<title>GroupGets Boson-S3</title>
+	</head>
+	<body style="background-color:#daf2f8dc;" onload="getCameraInfo()">
+		<script type="text/javascript" src="bosonFunctions.js"></script>
+
+		<ul>
+			<li><a class="active" href="index.html">Home</a></li>
+			<li><a href="ffc.html">FFC Settings</a></li>
+			<li><a href="zoom.html">Zoom Settings</a></li>
+			<li><a href="roi.html">ROI Settings</a></li>
+			<li><a href="spotmeter.html">Spot Meter</a></li>
+			<li><a href="settings.html">System Settings</a></li>
+		</ul>
+		<div style="margin-left:10%;padding:1px 16px;height:1000px;">
+
+			<style>
+                .container {
+                    display: grid;
+                    grid-template-areas:
+                    "video logo"
+                    "video read"
+					"color color";
+                    grid-template-columns: auto auto auto;
+                    gap: 5px;
+                    padding: 10px;
+                }
+                .container > div.video {
+                    grid-area: video;
+                    text-align: center;
+                    border: 3px solid black;
+                    padding: 100px;
+                }
+                .container > div.logo {
+                    grid-area: logo;
+					text-align: center;
+                    border: 3px solid black;
+                    padding: 10px;
+                }
+                .container > div.read {
+                    grid-area: read;
+                    border: 3px solid black;
+                    padding: 10px;
+                }                
+				.container > div.color {
+                    grid-area: color;
+                    border: 3px solid black;
+                    padding: 10px;
+                }
+			</style>
+
+			<div class="container">
+				<div class="logo">
+					<p style="font-size: 25px;"><b>Boson S3 Camera</b></p>
+					<img align="center" src="groupgets-logo.jpg" width="350" height="250">
+				</div>
+				<div class="read">
+					<p style="font-size: 20px;"><b>Camera Info:</b></p>
+					<form>
+						<label for="camera_pn"><b>Camera Part Number:</b></label>
+						<output type="text" id="camera_pn" name="camera_pn" for="camera_pn"></output><br><br>
+						<label for="camera_sn"><b>Camera SN:</b></label>
+						<output id="camera_sn" name="camera_sn" for="camera_sn"></output><br><br>
+						<label for="sensor_sn"><b>Sensor SN:</b></label>
+						<output id="sensor_sn" name="sensor_sn" for="sensor_sn"></output><br><br>
+						<label for="software_rev"><b>Software Revision:</b></label>
+						<output id="software_rev" name="software_rev" for="software_rev"></output><br><br>
+					</form>
+				</div>
+				<div class="color">
+					<p style="font-size: 25px;"><b>Set Video Color Palette:</b></p>
+
+					<button id="colorWhiteHot" onclick="setColor(this.id)">White Hot</button>
+					<button id="colorBlackHot" onclick="setColor(this.id)">Black Hot</button>
+					<button id="colorRainbow" onclick="setColor(this.id)">Rainbow</button>
+					<button id="colorRainbowhc" onclick="setColor(this.id)">Rainbow HC</button>
+					<button id="colorIronbow" onclick="setColor(this.id)">Ironbow</button>
+					<button id="colorLava" onclick="setColor(this.id)">Lava</button>
+					<button id="colorArctic" onclick="setColor(this.id)">Arctic</button>
+					<button id="colorGlobow" onclick="setColor(this.id)">Globow</button>
+					<button id="colorGradedFire" onclick="setColor(this.id)">Graded Fire</button>
+					<button id="colorHottest" onclick="setColor(this.id)">Hottest</button>		
+					<br><br>
+				</div>
+				<div class="video">
+					<iframe src="http://169.254.1.2:8889/stream/" width="640" height="512"></iframe>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+           	body {
+			margin: 0;
+			}
+			
+			ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			width: 10%;
+			background-color: #56ccf0;
+			position: fixed;
+			height: 100%;
+			overflow: auto;
+			}
+			
+			li a {
+			display: block;
+			color: #000;
+			padding: 8px 16px;
+			text-decoration: none;
+			}
+			
+			li a.active {
+			background-color: #3678f3;
+			color: white;
+			}
+			
+			li a:hover:not(.active) {
+			background-color: #555;
+			color: white;
+			}
+        </style>
+
+        <title>GroupGets Boson-S3</title>
+    </head>
+
+    <body style="background-color:#daf2f8dc;" onload="getPassword()">
+        <script type="text/javascript" src="bosonFunctions.js"></script>
+    
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="ffc.html">FFC Settings</a></li>
+            <li><a href="zoom.html">Zoom Settings</a></li>
+            <li><a href="roi.html">ROI Settings</a></li>
+            <li><a href="spotmeter.html">Spot Meter</a></li>
+            <li><a class="active" href="settings.html">System Settings</a></li>
+        </ul>
+        <div style="margin-left:10%;padding:1px 16px;height:1000px;">
+        
+            <style type="text/css">
+                form, table {
+                    display:inline;
+                    margin:0px;
+                    padding:0px;
+                }
+            </style>
+            <style>
+                .container {
+                    display: grid;
+                    grid-template-areas:
+                    "video set"
+                    "video read";
+                    grid-template-columns: auto auto auto;
+                    gap: 5px;
+                    padding: 10px;
+                }
+                .container > div.video {
+                    grid-area: video;
+                    text-align: center;
+                    border: 3px solid black;
+                    padding: 100px;
+                }
+                .container > div.set {
+                    grid-area: set;
+                    border: 3px solid black;
+                    padding: 10px;
+                }
+                .container > div.read {
+                    grid-area: read;
+                    text-align: center;
+                    border: 3px solid black;
+                    padding: 10px;
+                }
+            </style>
+            <p style="font-size: 25px;"><b>System Settings</b></p>
+
+            <div class="container">
+                <div class="set">
+                    <p style="font-size: 18px;"><b>Current Username / Password</b></p>
+                    <form id="current_password">
+                        <label for="cur_user"><b>Username:</b></label><br>
+                        <output id="cur_user" name="cur_user" for="cur_user"></output><br><br>
+                        <label for="cur_pwd"><b>Password:</b></label><br>
+                        <output id="cur_pwd" name="cur_pwd" for="cur_pwd"></output><br><br>
+                    </form>
+                    <p style="font-size: 18px;"><b>Change Username / Password</b></p>
+                    <form id="set_password">
+                        <label for="new_user">New Username</label><br>
+                        <input type="text" id="new_user" name="new_user" value="" size="24"><br><br>
+                        <label for="new_pwd">New Password</label><br>
+                        <input type="text" id="new_pwd" name="new_pwd" value="" size="24"><br><br>
+                    </form>
+                    <button onclick="setPassword()">Set</button><p>Must reset web server for changes to take effect.</p>
+                </div>
+                <div class="read">
+                    <button onclick="resetWebServer()">Reset Web Server</button>
+                    <button onclick="resetCamera()">Reset Camera</button><br><br>
+                    <button onclick="resetSystem()">Reset System</button>
+                    <button onclick="resetRtspStream()">Restart RTSP Stream</button>
+                </div>
+                <div class="video">
+                    <iframe src="http://169.254.1.2:8889/stream/" width="640" height="512"></iframe>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

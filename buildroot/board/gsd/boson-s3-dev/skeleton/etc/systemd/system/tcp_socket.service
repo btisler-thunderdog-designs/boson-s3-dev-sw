@@ -1,0 +1,13 @@
+[Unit]
+Description=Python Socket Server
+After=network-online.target
+Wants=network-online.target
+ 
+[Service]
+EnvironmentFile=
+ExecStart=python3 /home/tcp_server.py
+Type=exec
+Restart=on-failure
+ 
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+           	body {
+			margin: 0;
+			}
+			
+			ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			width: 10%;
+			background-color: #56ccf0;
+			position: fixed;
+			height: 100%;
+			overflow: auto;
+			}
+			
+			li a {
+			display: block;
+			color: #000;
+			padding: 8px 16px;
+			text-decoration: none;
+			}
+			
+			li a.active {
+			background-color: #3678f3;
+			color: white;
+			}
+			
+			li a:hover:not(.active) {
+			background-color: #555;
+			color: white;
+			}
+        </style>
+
+        <title>GroupGets Boson-S3</title>
+    </head>
+
+    <body style="background-color:#daf2f8dc;" onload="getSpotStatistics()">
+        <script type="text/javascript" src="bosonFunctions.js"></script>
+    
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="ffc.html">FFC Settings</a></li>
+            <li><a href="zoom.html">Zoom Settings</a></li>
+            <li><a href="roi.html">ROI Settings</a></li>
+            <li><a class="active" href="spotmeter.html">Spot Meter</a></li>
+            <li><a href="settings.html">System Settings</a></li>
+        </ul>
+        <div style="margin-left:10%;padding:1px 16px;height:1000px;">
+        
+            <style type="text/css">
+                form, table {
+                    display:inline;
+                    margin:0px;
+                    padding:0px;
+                }
+            </style>
+            <style>
+                .container {
+                    display: grid;
+                    grid-template-areas:
+                    "video enable"
+                    "video set"
+                    "video read";
+                    grid-template-columns: auto auto auto;
+                    gap: 5px;
+                    padding: 10px;
+                }
+                .container > div.video {
+                    grid-area: video;
+                    text-align: center;
+                    border: 3px solid black;
+                    padding: 100px;
+                }
+                .container > div.enable {
+                    grid-area: enable;
+                    border: 3px solid black;
+                    padding: 10px;
+                }
+                .container > div.set {
+                    grid-area: set;
+                    border: 3px solid black;
+                    padding: 10px;
+                }
+                .container > div.read {
+                    grid-area: read;
+                    border: 3px solid black;
+                    padding: 10px;
+                }
+            </style>
+            <p style="font-size: 30px;"><b>Spot Meter</b></p>
+
+            <div class="container">
+                <div class="enable">
+                    <p><b>Enable / Disable Spotmeter</b></p>
+                    <button id="spotEnable" onclick="setSpotEnable(this.id)">Enable</button>
+                    <button id="spotDisable" onclick="setSpotEnable(this.id)">Disable</button><br><br>
+                    <form id="temperature_units">
+                        <input type="radio" id="fahrenheit" name="temp_units" value="fahrenheit">
+                        <label for="fahrenheit">Fahrenheit</label>
+                        <input type="radio" id="celsius" name="temp_units" value="celsius" checked>
+                        <label for="celsius">Celsius</label>                        
+                    </form>
+                </div>
+                <div class="set">	
+                    <p><b>Set Spot Meter ROI</b></p>
+                    <form id="set_roi">
+                        <input type="text" id="spot_x" name="spot_x" value="" size="4">
+                        <label for="spot_x">ROI X-Center:</label><br><br>
+                        <input type="text" id="spot_y" name="spot_y" value="" size="4">
+                        <label for="spot_y">ROI Y-Center:</label><br><br>
+                        <input type="text" id="spot_width" name="spot_width" value="" size="4">
+                        <label for="spot_width">ROI Width:</label><br><br>
+                        <input type="text" id="spot_height" name="spot_height" value="" size="4">
+                        <label for="spot_height">ROI Height:</label><br><br>
+                    </form>
+                    <button id="set_spot_roi" onclick="setSpotRoi(this.id)">Set ROI</button>
+                    <button id="clear_spot_roi" onclick="setSpotRoi(this.id)">Clear ROI</button>
+                </div>
+                <div class="read">
+                    <p><b>Current Spot Meter ROI</b></p>
+                    <form>
+                        <label for="spot_center_x"><b>Center-X:</b></label>
+                        <output id="spot_center_x" name="spot_center_x" for="spot_center_x"></output><br>
+                        <label for="spot_center_y"><b>Center-Y:</b></label>
+                        <output id="spot_center_y" name="spot_center_y" for="spot_center_y"></output><br>
+                        <label for="spot_roi_w"><b>ROI Width:</b></label>
+                        <output id="spot_roi_w" name="spot_roi_w" for="spot_roi_w"></output><br>
+                        <label for="spot_roi_h"><b>ROI Height:</b></label>
+                        <output id="spot_roi_h" name="spot_roi_h" for="spot_roi_h"></output><br>
+                    </form>
+                    <p><b>Spot Meter Statistics</b></p>
+                    <form>
+                        <output id="min_temp"
+                    </form>
+                    <button onclick="getSpotStatistics()">Get Statistics</button>
+                </div>
+                <div class="video">
+                    <iframe src="http://169.254.1.2:8889/stream/" width="640" height="512"></iframe>
+                </div>
+            </div>            
+        </div>
+    </body>
+</html>

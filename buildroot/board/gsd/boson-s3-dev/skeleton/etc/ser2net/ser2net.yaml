@@ -1,0 +1,11 @@
+define: &banner \r\nser2net port \p device \d [\B] (Debian GNU/Linux)\r\n\r\n
+ 
+admin:
+    accepter: tcp,8000
+ 
+connection: &nr8001
+    accepter: tcp,8001
+    enable: on
+    connector: serialdev,
+               /dev/ttyS1,
+               921600n81,local

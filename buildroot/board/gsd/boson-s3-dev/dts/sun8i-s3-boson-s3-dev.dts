@@ -134,6 +134,8 @@
 	vmmc-supply = <&vcc_3v3>;
 	bus-width = <4>;
 	broken-cd;
+	non-removable;
+	no-1-8-v;
 	status = "okay";
 };
 

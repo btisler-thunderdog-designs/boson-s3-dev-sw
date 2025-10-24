@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+			margin: 0;
+			}
+			
+			ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			width: 10%;
+			background-color: #56ccf0;
+			position: fixed;
+			height: 100%;
+			overflow: auto;
+			}
+			
+			li a {
+			display: block;
+			color: #000;
+			padding: 8px 16px;
+			text-decoration: none;
+			}
+			
+			li a.active {
+			background-color: #3678f3;
+			color: white;
+			}
+			
+			li a:hover:not(.active) {
+			background-color: #555;
+			color: white;
+			}
+        </style>
+
+        <title>GroupGets Boson-S3</title>
+    </head>
+
+    <body style="background-color:#daf2f8dc;" onload="getZoomState()">
+        <script type="text/javascript" src="bosonFunctions.js"></script>
+    
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="ffc.html">FFC Settings</a></li>
+            <li><a class="active" href="zoom.html">Zoom Settings</a></li>
+            <li><a href="roi.html">ROI Settings</a></li>
+            <li><a href="spotmeter.html">Spot Meter</a></li>
+            <li><a href="settings.html">System Settings</a></li>
+        </ul>
+        <div style="margin-left:10%;padding:1px 16px;height:1000px;">
+        
+            <style type="text/css">
+                form, table {
+                    display:inline;
+                    margin:0px;
+                    padding:0px;
+                }
+            </style>
+            <style>
+                .container {
+                    display: grid;
+                    grid-template-areas:
+                    "video set"
+                    "video read";
+                    grid-template-columns: auto auto auto;
+                    gap: 5px;
+                    padding: 10px;
+                }
+                .container > div.video {
+                    grid-area: video;
+                    text-align: center;
+                    border: 3px solid black;
+                    padding: 100px;
+                }
+                .container > div.set {
+                    grid-area: set;
+                    border: 3px solid black;
+                    padding: 10px;
+                }
+                .container > div.read {
+                    grid-area: read;
+                    border: 3px solid black;
+                    padding: 10px;
+                }
+            </style>
+            <p style="font-size: 25px;"><b>Zoom Settings</b></p>
+            <div class="container">
+                <div class="set">	
+                    <p style="font-size: 20px;"><b>Set Zoom</b></p>
+                    <form id="set_zoom">
+                        <label for="zoom_x">Zoom X-Center:</label><br>
+                        <input type="text" id="zoom_x" name="zoom_x" value="" size="4"><br><br>
+                        <label for="zoom_y">Zoom Y-Center:</label><br>
+                        <input type="text" id="zoom_y" name="zoom_y" value="" size="4"><br><br>
+                        <label for="zoom_level">Zoom Level:</label><br>
+                        <input type="text" id="zoom_level" name="zoom_level" value="" size="4"><br><br>
+                    </form>
+                    <button onclick="setZoomState()">Set Zoom</button>
+                </div>
+                <div class="read">
+                    <p style="font-size: 20px;"><b>Current Zoom Settings</b></p>
+                    <form>
+                        <label for="xloc"><b>Currrent X-Center:</b></label>
+                        <output id="xloc" name="x" for="x location"></output><br><br>
+                        <label for="yloc"><b>Current Y-Center:</b></label>
+                        <output id="yloc" name="y" for="y location"></output><br><br>
+                        <label for="zoom"><b>Current Zoom Level:</b></label>
+                        <output id="zoom" name="y" for="y location"></output><br><br>
+                    </form>
+                    <button onclick="getZoomState()">Get Zoom</button>
+                </div>
+                <div class="video">
+                    <iframe src="http://169.254.1.2:8889/stream/" width="640" height="512"></iframe>
+                </div>
+            </div>            
+        </div>
+    </body>
+</html>

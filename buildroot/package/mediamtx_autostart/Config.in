@@ -1,0 +1,4 @@
+config BR2_PACKAGE_MEDIAMTX_AUTOSTART
+       bool "MEDIAMTX autostart service"
+       help
+         Install service for mediamtx

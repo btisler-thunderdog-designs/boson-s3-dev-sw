@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+			margin: 0;
+			}
+			
+			ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			width: 10%;
+			background-color: #56ccf0;
+			position: fixed;
+			height: 100%;
+			overflow: auto;
+			}
+			
+			li a {
+			display: block;
+			color: #000;
+			padding: 8px 16px;
+			text-decoration: none;
+			}
+			
+			li a.active {
+			background-color: #3678f3;
+			color: white;
+			}
+			
+			li a:hover:not(.active) {
+			background-color: #555;
+			color: white;
+			}
+        </style>
+        <title>GroupGets Boson-S3</title>
+    </head>
+
+    <body style="background-color:#daf2f8dc;" onload="getFfcState()">
+        <script type="text/javascript" src="bosonFunctions.js"></script>
+    
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a class="active" href="ffc.html">FFC Settings</a></li>
+            <li><a href="zoom.html">Zoom Settings</a></li>
+            <li><a href="roi.html">ROI Settings</a></li>
+            <li><a href="spotmeter.html">Spot Meter</a></li>
+            <li><a href="settings.html">System Settings</a></li>
+        </ul>
+        <div style="margin-left:10%;padding:1px 16px;height:1000px;">
+        
+            <style type="text/css">
+                form, table {
+                    display:inline;
+                    margin:0px;
+                    padding:0px;
+                }
+            </style>
+            <style>
+                .container {
+                    display: grid;
+                    grid-template-areas:
+                    "video set"
+                    "video read";
+                    grid-template-columns: auto auto auto;
+                    gap: 5px;
+                    padding: 10px;
+                }
+                .container > div.video {
+                    grid-area: video;
+                    text-align: center;
+                    border: 3px solid black;
+                    padding: 100px;
+                }
+                .container > div.set {
+                    grid-area: set;
+                    border: 3px solid black;
+                    padding: 10px;
+                }
+                .container > div.read {
+                    grid-area: read;
+                    border: 3px solid black;
+                    padding: 10px;
+                }
+            </style>
+            <p style="font-size: 25px;"><b>FFC Settings</b></p>
+            <div class="container">
+                <div class="set">
+                    <p style="font-size: 20px;"><b>FFC Configuration Settings</b></p>
+                    <form>
+                        <label for="ffc_mode">FFC Mode:</label><br>
+                        <select id="ffc_mode" name="ffc_mode">
+                            <option value="-">-</option>
+                            <option id="ffcmode_0" value="setFfcMode_manual">0 - Manual FFC</option>
+                            <option id="ffcmode_1" value="setFfcMode_auto">1 - Automatic FFC</option>
+                            <option id="ffcmode_2" value="setFfcMode_external">2 - External FFC</option>
+                            <option id="ffcmode_3" value="setFfcMode_shutter">3 - Shutter Test</option>
+                        </select>
+                    </form>
+                    <button onclick="setFfcMode()">Set Mode</button>
+        
+                    <br><br>
+        
+                    <form>
+                        <label for="ffc_gain">FFC Gain Mode:</label><br>
+                        <select id="ffc_gain" name="ffc_gain">
+                            <option value="-">-</option>
+                            <option value="setFfcGain_high">0 - High Gain</option>
+                            <option value="setFfcGain_low">1 - Low Gain</option>
+                            <option value="setFfcGain_auto">2 - Auto Gain</option>
+                            <option value="setFfcGain_dual">3 - Dual Gain</option>
+                            <option value="setFfcGain_manual">4 - Manual Gain</option>
+                        </select>
+                    </form>
+                    <button onclick="setFfcGain()">Set Gain</button>
+                    <br><br>
+                    <form>
+                        <label for="ffc_int">FFC Integration Frames:</label><br>
+                        <select id="ffc_int" name="ffc_int">
+                            <option value="">-</option>
+                            <option value="setFfcInt_2">2 Frames</option>
+                            <option value="setFfcInt_4">4 Frames</option>
+                            <option value="setFfcInt_8">8 Frames</option>
+                            <option value="setFfcInt_16">16 Frames</option>
+                        </select>
+                    </form>
+                    <button onclick="setFfcInt()">Set Frames</button>
+                    <br><br>
+                    <form>
+                        <label for="ffc_frame">FFC Period (s):</label><br>
+                        <input type="text" id="ffc_frame" name="ffc_frame" value="" size="4">
+                    </form>
+                    <button onclick="setFfcPeriod()">Set Period</button>
+                    <br><br>
+                    <form>
+                        <label for="ffc_temp">FFC Temperature Delta (C):</label><br>
+                        <input type="text" id="ffc_temp" name="ffc_temp" value="" size="4">
+                    </form>
+                    <button onclick="setFfcTempDelta()">Set Delta</button>
+                    <br><br>
+                    <button onclick="runFfc()">Run FFC</button>
+                </div>
+
+                <div class="read">
+                    <p style="font-size: 20px;"><b>Current FFC Settings:</b></p>
+                    <form>
+                        <label for="ffc_modes"><b>FFC Mode:</b></label>
+                        <output id="ffc_modes" name="ffcmode" for="ffc_modes"></output><br><br>
+                        <label for="ffc_gains"><b>FFC Gain:</b></label>
+                        <output id="ffc_gains" name="ffcgain" for="ffc_gains"></output><br><br>
+                        <label for="ffc_frames"><b>FFC Integration Frames:</b></label>
+                        <output id="ffc_frames" name="ffcframes" for="ffc_frames"></output><br><br>
+                        <label for="ffc_period"><b>FFC Period (s):</b></label>
+                        <output id="ffc_period" name="ffcperiod" for="ffc_period"></output><br><br>
+                        <label for="ffc_delta"><b>FFC Temperature Delta (C):</b></label>
+                        <output id="ffc_delta" name="ffcdelta" for="ffc_delta"></output><br><br>
+                        <label for="ffc_ltemp"><b>FFC Last Temperature (C):</b></label>
+                        <output id="ffc_ltemp" name="ffcltemp" for="ffc_ltemp"></output><br><br>
+                        <label for="fpa_temp"><b>FPA Temperature (C):</b></label>
+                        <output id="fpa_temp" name="fpatemp" for="fpa_temp"></output><br><br>
+                    </form>
+                    <button onclick="getFfcState()">Get Settings</button>
+                </div>
+                <div class="video">
+                    <iframe src="http://169.254.1.2:8889/stream/" width="640" height="512"></iframe>
+                </div>
+            </div>
+         </div>
+    </body>
+</html>

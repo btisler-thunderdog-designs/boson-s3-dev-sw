@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+           	body {
+			margin: 0;
+			}
+			
+			ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			width: 10%;
+			background-color: #56ccf0;
+			position: fixed;
+			height: 100%;
+			overflow: auto;
+			}
+			
+			li a {
+			display: block;
+			color: #000;
+			padding: 8px 16px;
+			text-decoration: none;
+			}
+			
+			li a.active {
+			background-color: #3678f3;
+			color: white;
+			}
+			
+			li a:hover:not(.active) {
+			background-color: #555;
+			color: white;
+			}
+        </style>
+
+        <title>GroupGets Boson-S3</title>
+    </head>
+
+    <body style="background-color:#daf2f8dc;" onload="getRoiStatistics()">
+        <script type="text/javascript" src="bosonFunctions.js"></script>
+    
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="ffc.html">FFC Settings</a></li>
+            <li><a href="zoom.html">Zoom Settings</a></li>
+            <li><a class="active" href="roi.html">ROI Settings</a></li>
+            <li><a href="spotmeter.html">Spot Meter</a></li>
+            <li><a href="settings.html">System Settings</a></li>
+        </ul>
+        <div style="margin-left:10%;padding:1px 16px;height:1000px;">
+        
+            <style type="text/css">
+                form, table {
+                    display:inline;
+                    margin:0px;
+                    padding:0px;
+                }
+            </style>
+            <style>
+                .container {
+                    display: grid;
+                    grid-template-areas:
+                    "video set"
+                    "video read";
+                    grid-template-columns: auto auto auto;
+                    gap: 5px;
+                    padding: 10px;
+                }
+                .container > div.video {
+                    grid-area: video;
+                    text-align: center;
+                    border: 3px solid black;
+                    padding: 100px;
+                }
+                .container > div.set {
+                    grid-area: set;
+                    border: 3px solid black;
+                    padding: 10px;
+                }
+                .container > div.read {
+                    grid-area: read;
+                    border: 3px solid black;
+                    padding: 10px;
+                }
+            </style>
+            <p style="font-size: 25px;"><b>ROI Statistics</b></p>
+
+            <div class="container">
+                <div class="set">	
+                    <p style="font-size: 20px;"><b>Set ROI</b></p>
+                    <form id="set_roi">
+                        <label for="pos_x">ROI X-Center:</label><br>
+                        <input type="text" id="pos_x" name="pos_x" value="" size="4">
+                        <input type="range" id="slide_x" min="0" max="640" onchange="pos_x.value=parseInt(slide_x.value)"><br><br>
+                        <label for="pos_y">ROI Y-Center:</label><br>
+                        <input type="text" id="pos_y" name="pos_y" value="" size="4">
+                        <input type="range" id="slide_y" min="0" max="512" onchange="pos_y.value=parseInt(slide_y.value)"><br><br>
+                        <label for="zoom_level">ROI Width:</label><br>
+                        <input type="text" id="roi_width" name="roi_width" value="" size="4"><br><br>
+                        <label for="roi_height">ROI Height:</label><br>
+                        <input type="text" id="roi_height" name="roi_height" value="" size="4"><br><br>
+                    </form>
+                    <button id="setroi" onclick="setRoi(this.id)">Set ROI</button>
+                    <button id="clearroi" onclick="setRoi(this.id)">Clear ROI</button>
+                </div>
+                <div class="read">
+                    <p style="font-size: 20px;"><b>Current ROI</b></p>
+                    <form>
+                        <label for="center_x"><b>Center-X:</b></label>
+                        <output id="center_x" name="center_x" for="center_x"></output><br><br>
+                        <label for="center_y"><b>Center-Y:</b></label>
+                        <output id="center_y" name="center_y" for="center_y"></output><br><br>
+                        <label for="roi_w"><b>ROI Width:</b></label>
+                        <output id="roi_w" name="roi_w" for="roi_w"></output><br><br>
+                        <label for="roi_h"><b>ROI Height:</b></label>
+                        <output id="roi_h" name="roi_h" for="roi_h"></output><br><br>
+                    </form>
+                    <p style="font-size: 20px;"><b>Current ROI Statistics</b></p>
+                    <form>
+                        <label for="min_value"><b>Minimum ROI Value:</b></label>
+                        <output id="min_value" name="min_value" for="min_value"></output><br><br>
+                        <label for="max_value"><b>Maximum ROI Value:</b></label>
+                        <output id="max_value" name="max_value" for="max_value"></output><br><br>
+                        <label for="avg_value"><b>Mean ROI Value:</b></label>
+                        <output id="avg_value" name="avg_value" for="avg_value"></output><br><br>
+                    </form>
+                    <button onclick="getRoiStatistics()">Get Statistics</button>
+                </div>
+                <div class="video">
+                    <iframe src="http://169.254.1.2:8889/stream/" width="640" height="512"></iframe>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
