@@ -1,0 +1,84 @@
+# GitLab CI/CD pipeline for Buildroot build
+
+stages:
+  - build
+  - release
+
+variables:
+  BUILDROOT_VERSION: "2024.02"
+  PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/groups/${CI_PROJECT_NAMESPACE_ID}/packages/generic/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}"
+
+# Build job
+build:
+  stage: build
+  tags:
+    - zephyr-runner
+
+  cache:
+    key: ccache-$CI_COMMIT_SHA
+    paths:
+      - ~/.buildroot-ccache/
+      - ~/downloads/
+    fallback_keys:
+      - ccache-
+  
+  before_script:
+    - echo "apt-get update"
+    - echo "apt-get -y install build-essential bc gcc g++ patch binutils unzip rsync wget bzip2 gzip perl gcc-multilib g++-multilib libssl-dev"
+    - |
+      if [ ! -f ~/downloads/buildroot-${BUILDROOT_VERSION}.tar.gz ]; then
+        mkdir -p ~/downloads
+        wget -O ~/downloads/buildroot-${BUILDROOT_VERSION}.tar.gz https://buildroot.org/downloads/buildroot-${BUILDROOT_VERSION}.tar.gz
+      fi
+  
+  script:
+    - tar -xaf ~/downloads/buildroot-${BUILDROOT_VERSION}.tar.gz
+    - cd buildroot-${BUILDROOT_VERSION}
+    - make BR2_EXTERNAL=../buildroot/ boson_s3_dev_defconfig
+    - export BR2_DL_DIR=~/downloads/
+    - export BR2_USE_CCACHE=1
+    - export BR2_CCACHE_DIR=~/.buildroot-ccache/
+    - make -j$(nproc --all) > $CI_PROJECT_DIR/output.log 2>&1
+    - cp output/images/sdcard.img $CI_PROJECT_DIR/
+  
+  after_script:
+    - rm -rf buildroot-${BUILDROOT_VERSION} || true
+  
+  artifacts:
+    name: "sdcard-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - output.log
+      - sdcard.img
+    when: always
+    expire_in: 1 week
+  
+  only:
+    - pushes
+    - merge_requests
+    - tags
+
+# Release job - only runs on tags
+release:
+  stage: release
+  tags:
+    - zephyr-runner
+  
+  dependencies:
+    - build
+  
+  script:
+    - echo "Creating release for tag $CI_COMMIT_TAG"
+    - 'curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file sdcard.img "${PACKAGE_REGISTRY_URL}/sdcard.img"'
+  
+  release:
+    tag_name: $CI_COMMIT_TAG
+    name: "Release $CI_COMMIT_TAG"
+    description: "Buildroot image for Boson S3 Dev board"
+    assets:
+      links:
+        - name: "sdcard.img"
+          url: "${PACKAGE_REGISTRY_URL}/sdcard.img"
+          link_type: "package"
+  
+  only:
+    - tags
